@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity{
 //                Log.v("main res =", String.valueOf(R.id.textview_result) );
                 startService(intent);
 
+                // comment off this part the thing will work normally
                 Intent intent1 = new Intent(getApplicationContext(), MyService.class);
                 intent1.putExtra("ticker", String.valueOf(ticker1.getText()));
                 intent1.putExtra("result", R.id.textview_result2);
