@@ -92,29 +92,34 @@ public class MyService extends Service{
             JSONObject jsonObject = null;
             JSONArray jsonArrayClose = null;
             JSONArray jsonArrayVolume = null;
+            JSONArray jsonArrayTime = null;
 
             try {
                 jsonObject = new JSONObject(result);
                 jsonArrayClose = jsonObject.getJSONArray("c");
                 jsonArrayVolume = jsonObject.getJSONArray("v");
+                jsonArrayTime = jsonObject.getJSONArray("t");
             } catch (JSONException e) {e.printStackTrace();}
 
 
             Log.v("close", String.valueOf(jsonArrayClose.length()));
             Log.v("vol", String.valueOf(jsonArrayVolume.length()));
+            Log.v("vol", String.valueOf(jsonArrayTime.length()));
 
             try {
                 for (int i = 0; i < jsonArrayClose.length(); i++) {
                     double close = jsonArrayClose.getDouble(i);
                     double volume = jsonArrayVolume.getDouble(i);
+                    String time = jsonArrayTime.getString(i);
                     //logging so that we can see the operations in logcat
-                    Log.v("data", i + ":, c: " + close + " v: " + volume);
+                    Log.v("data", i + ":, c: " + close + " v: " + volume + "t: " + time);
                     //database operations of inserting the data into the content provider
                     //persisted in sqlite db
                     ContentValues values = new ContentValues();
                     values.put(HistoricalDataProvider.CLOSE, close);
                     values.put(HistoricalDataProvider.VOLUME, volume);
                     values.put(HistoricalDataProvider.NAME, ticker);
+                    values.put(HistoricalDataProvider.TIME, time);
                     //HDP.content_uri is to get the connection to the sqlite db
                     //getContentResolver() is a method from extending service
                     getContentResolver().insert(HistoricalDataProvider.CONTENT_URI, values);

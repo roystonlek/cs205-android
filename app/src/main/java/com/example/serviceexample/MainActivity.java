@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 result.setText("Waiting for data.. ");
+                result1.setText("Waiting for data.. ");
 //                myBroadcastReceiver = new MyBroadcastReceiver(new Handler(Looper.getMainLooper()));
 //                registerReceiver(myBroadcastReceiver, new IntentFilter("DOWNLOAD_COMPLETE"));
             }

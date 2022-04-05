@@ -27,6 +27,7 @@ public class HistoricalDataProvider extends ContentProvider {
     static final String CLOSE = "close";
     static final String VOLUME = "volume";
     static final String NAME = "name";
+    static final String TIME = "time";
 
     private static HashMap<String, String> HISTORY_PROJECTION_MAP;
 
@@ -52,6 +53,7 @@ public class HistoricalDataProvider extends ContentProvider {
                     " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     " close DECIMAL(5,3) NOT NULL, " +
                     " name varchar(4) NOT NULL,"+
+                    " time varchar(255) NOT NULL,"+
                     " volume DECIMAL(10,1) NOT NULL);";
 
 
