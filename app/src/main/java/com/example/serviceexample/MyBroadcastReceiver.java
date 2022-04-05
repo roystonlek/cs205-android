@@ -26,8 +26,11 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals( "DOWNLOAD_COMPLETE") ) {
             String ticker = intent.getStringExtra("ticker");
+            Log.v("Broadcast tick", ticker);
             int result_id = intent.getIntExtra("result", 0 );
-            handler.post(new Runnable() {
+
+            //handler.post adds the runnable to the MESSAGEQUEUE to be dispatched by the looper
+            handler.post( new Runnable() {
                 @Override
                 public void run() {
                     Uri CONTENT_URI = Uri.parse("content://com.example.serviceexample.HistoricalDataProvider/history");

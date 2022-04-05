@@ -34,9 +34,9 @@ public class MyService extends Service{
     private static final int READ_TIMEOUT = 15000;
     private static final int CONNECTION_TIMEOUT = 15000;
 
-    private String ticker = "MSFT";
+//    private String ticker = "MSFT";
     private String token ="c8vgk7aad3icdhue95lg"; // put your own token
-    private int result_id = 0;
+//    private int result_id = 0;
 
     private final class ServiceHandler extends Handler{//extended handler class to tell the handler what to do when receive message
         public ServiceHandler(Looper looper){
@@ -47,16 +47,16 @@ public class MyService extends Service{
         public void handleMessage(Message msg){
 
             // url to get historical data
-
-            String stringUrl = "https://finnhub.io/api/v1/stock/candle?symbol="+ticker
-                    +"&resolution=D&from=1625097601&to=1640995199&token="+token;
+            String stringUrl ;
             String result;
             String inputLine;
-
+            String ticker = String.valueOf(msg.obj);
+            int result_id = msg.arg2;
             try {
 
                 // make GET requests
-
+                stringUrl = "https://finnhub.io/api/v1/stock/candle?symbol="+ticker
+                        +"&resolution=D&from=1625097601&to=1640995199&token="+token;
                 URL myUrl = new URL(stringUrl);
                 HttpURLConnection connection =(HttpURLConnection) myUrl.openConnection();
 
@@ -129,6 +129,8 @@ public class MyService extends Service{
             intent.putExtra("ticker", String.valueOf(ticker));
             intent.putExtra("result", result_id);
             sendBroadcast(intent);
+            Log.v("Service looper", "Done here ");
+            Log.v("ticker is ", ticker);
 
             stopSelf(msg.arg1);
 
@@ -147,13 +149,15 @@ public class MyService extends Service{
     //when startService is called in the main (intent) is passed
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        ticker = intent.getStringExtra("ticker"); //putExtra then now can retrieve (key,value)
-        result_id = intent.getIntExtra("result", 0 );
-        Log.v("nimama =" , String.valueOf(result_id));
+//        ticker = intent.getStringExtra("ticker"); //putExtra then now can retrieve (key,value)
+//        result_id = intent.getIntExtra("result", 0 );
+        Log.v("nimama =" , String.valueOf(intent.getIntExtra("result", 0 )));
         Toast.makeText(this, "download starting", Toast.LENGTH_SHORT).show();
 
         Message msg = serviceHandler.obtainMessage();
         msg.arg1 = startId;
+        msg.arg2 = intent.getIntExtra("result", 0 );
+        msg.obj = intent.getStringExtra("ticker");
         serviceHandler.sendMessage(msg);
 
         return START_STICKY;
