@@ -71,7 +71,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                     Log.v("sumret is ", String.valueOf(sum_returns ));
                     Log.v("sumret is ", String.valueOf(count ));
                     double annRet = Math.sqrt(250) * sum_returns / (double)count;
-                    result.setText(String.format("%.2f", annRet));
+                    String toRet = String.format("%.2f", annRet*100.0);
+                    result.setText(toRet + "%");
                     Log.v("nibaba= ", String.valueOf(result_id));
                 }
             });

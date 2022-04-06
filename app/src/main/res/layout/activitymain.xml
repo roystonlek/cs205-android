@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.033" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textview_first4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/param1"
@@ -44,7 +44,20 @@
         app:layout_constraintHorizontal_bias="0.383"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_ticker2"
-        app:layout_constraintVertical_bias="0.16" />
+        app:layout_constraintVertical_bias="0.017" />
+
+    <TextView
+        android:id="@+id/textview_first5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/param1"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/start_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.383"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_ticker3"
+        app:layout_constraintVertical_bias="0.075" />
 
     <TextView
         android:id="@+id/textview_result"
@@ -85,15 +98,28 @@
         app:layout_constraintBottom_toTopOf="@+id/start_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.222"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toEndOf="@+id/textview_first4"
         app:layout_constraintTop_toBottomOf="@+id/edit_ticker2"
-        app:layout_constraintVertical_bias="0.16" />
+        app:layout_constraintVertical_bias="0.017" />
+
+    <TextView
+        android:id="@+id/textview_result4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="na"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/start_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.222"
+        app:layout_constraintStart_toEndOf="@+id/textview_first5"
+        app:layout_constraintTop_toBottomOf="@+id/edit_ticker3"
+        app:layout_constraintVertical_bias="0.075" />
 
     <EditText
         android:id="@+id/edit_ticker"
         android:layout_width="139dp"
         android:layout_height="60dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="136dp"
         android:layout_marginRight="136dp"
         android:ems="10"
@@ -106,7 +132,7 @@
         android:id="@+id/edit_ticker1"
         android:layout_width="139dp"
         android:layout_height="60dp"
-        android:layout_marginTop="208dp"
+        android:layout_marginTop="184dp"
         android:layout_marginEnd="136dp"
         android:layout_marginRight="136dp"
         android:ems="10"
@@ -119,7 +145,7 @@
         android:id="@+id/edit_ticker2"
         android:layout_width="139dp"
         android:layout_height="60dp"
-        android:layout_marginTop="320dp"
+        android:layout_marginTop="288dp"
         android:layout_marginEnd="136dp"
         android:layout_marginRight="136dp"
         android:ems="10"
@@ -127,6 +153,23 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edit_ticker3"
+        android:layout_width="139dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="136dp"
+        android:layout_marginRight="136dp"
+        android:ems="10"
+        android:hint="ticker4"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.544" />
 
     <TextView
         android:id="@+id/mainTitleTop"
@@ -146,7 +189,7 @@
         android:id="@+id/start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="120dp"
+        android:layout_marginBottom="76dp"
         android:text="Download"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -163,7 +206,7 @@
         app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_button"
-        app:layout_constraintVertical_bias="0.685" />
+        app:layout_constraintVertical_bias="0.222" />
 
     <!--new one added here-->
 
