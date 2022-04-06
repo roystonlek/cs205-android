@@ -1,5 +1,6 @@
 package com.example.serviceexample;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -50,8 +52,9 @@ public class MyService extends Service{
             String stringUrl ;
             String result;
             String inputLine;
-            String ticker = String.valueOf(msg.obj);
+            String ticker = String.valueOf(msg.obj).toUpperCase();
             int result_id = msg.arg2;
+
             try {
 
                 // make GET requests

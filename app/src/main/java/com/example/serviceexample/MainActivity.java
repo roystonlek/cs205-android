@@ -23,8 +23,8 @@ import com.example.serviceexample.*;
 public class MainActivity extends AppCompatActivity{
 
     private Button start, calc;
-    private TextView result , result1;
-    private EditText ticker , ticker1;
+    private TextView result , result1 , result2;
+    private EditText ticker , ticker1,ticker2;
 
 //    Uri CONTENT_URI = Uri.parse("content://com.example.serviceexample.HistoricalDataProvider/history");
     private BroadcastReceiver myBroadcastReceiver;
@@ -40,8 +40,10 @@ public class MainActivity extends AppCompatActivity{
         calc = (Button) findViewById(R.id.calc_button);
         result = (TextView) findViewById(R.id.textview_result);
         result1 = (TextView) findViewById(R.id.textview_result2);
+        result2 = (TextView)findViewById(R.id.textview_result3);
         ticker = (EditText) findViewById(R.id.edit_ticker);
         ticker1 = (EditText) findViewById(R.id.edit_ticker1);
+        ticker2 = (EditText) findViewById(R.id.edit_ticker2);
 
         // start service, pass ticker info via an intent
         //button .setOnclick
@@ -58,6 +60,11 @@ public class MainActivity extends AppCompatActivity{
                 Intent intent1 = new Intent(getApplicationContext(), MyService.class);
                 intent1.putExtra("ticker", String.valueOf(ticker1.getText()));
                 intent1.putExtra("result", R.id.textview_result2);
+                startService(intent1);
+
+                Intent intent2 = new Intent(getApplicationContext(), MyService.class);
+                intent1.putExtra("ticker", String.valueOf(ticker2.getText()));
+                intent1.putExtra("result", R.id.textview_result3);
                 startService(intent1);
             }
         });

@@ -121,8 +121,12 @@ public class HistoricalDataProvider extends ContentProvider {
         if (sortOrder == null || sortOrder == ""){
             sortOrder = ID;
         }
-
-        Cursor c = qb.query(db, projection, selection, selectionArgs,null, null, sortOrder);
+        String sqltest  = "SELECT *," +
+                "       (close - LAG(close, 1, null)OVER(ORDER BY time))/(LAG(close, 1, null)OVER(ORDER BY time)) returns " +
+                " FROM history where name = ? group by time" +
+                " ORDER BY time";
+//        Cursor c = qb.query(db, projection, selection, selectionArgs,null, null, sortOrder);
+        Cursor c = db.rawQuery(sqltest, selectionArgs);
 
         // register to watch a content URI for changes
         c.setNotificationUri(getContext().getContentResolver(), uri);

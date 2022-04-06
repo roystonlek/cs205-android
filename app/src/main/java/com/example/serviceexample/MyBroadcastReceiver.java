@@ -38,19 +38,27 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
                     result.setText("Calculating...");
                     double sum_price = 0.0;
+                    double sum_returns = 0.0;
+                    int count = 0;
                     double sum_volume = 0.0;
-                    Cursor cursor = context.getContentResolver().query(CONTENT_URI, null, "name like '%"+ticker+"%'", null, null);
+                    Cursor cursor = context.getContentResolver().query(CONTENT_URI, null, "name like '%"+ticker+"%'", new String[]{ticker}, null);
                     if (cursor.moveToFirst()) {
                         double close = cursor.getDouble(cursor.getColumnIndexOrThrow("close"));
                         double volume = cursor.getDouble(cursor.getColumnIndexOrThrow("volume"));
+                        double returns = cursor.getDouble(cursor.getColumnIndexOrThrow("returns"));
                         sum_price += close * volume;
                         sum_volume += volume;
+                        sum_returns += returns;
+                        count ++;
                         while (!cursor.isAfterLast()) {
                             int id = cursor.getColumnIndex("id");
                             close = cursor.getDouble(cursor.getColumnIndexOrThrow("close"));
                             volume = cursor.getDouble(cursor.getColumnIndexOrThrow("volume"));
+                            returns = cursor.getDouble(cursor.getColumnIndexOrThrow("returns"));
                             sum_price += close * volume;
                             sum_volume += volume;
+                            sum_returns += returns;
+                            count ++;
                             cursor.moveToNext();
                             Log.v("data", close + "");
                         }
@@ -60,7 +68,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                     }
 
                     double vwap = sum_price / sum_volume;
-                    result.setText(String.format("%.2f", vwap));
+                    Log.v("sumret is ", String.valueOf(sum_returns ));
+                    Log.v("sumret is ", String.valueOf(count ));
+                    double annRet = Math.sqrt(250) * sum_returns / (double)count;
+                    result.setText(String.format("%.2f", annRet));
                     Log.v("nibaba= ", String.valueOf(result_id));
                 }
             });
