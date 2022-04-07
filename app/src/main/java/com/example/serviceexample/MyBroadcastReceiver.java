@@ -28,17 +28,19 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals( "DOWNLOAD_COMPLETE") ) {
             String ticker = intent.getStringExtra("ticker");
-            Log.v("Broadcast tick", ticker);
             int result_id = intent.getIntExtra("result", 0 );
-
+            int volatility_id = intent.getIntExtra("volatility", 0);
+            Log.v("Broadcast tick", String.valueOf(volatility_id));
             //handler.post adds the runnable to the MESSAGEQUEUE to be dispatched by the looper
             handler.post( new Runnable() {
                 @Override
                 public void run() {
                     Uri CONTENT_URI = Uri.parse("content://com.example.serviceexample.HistoricalDataProvider/history");
                     TextView result = (TextView) ((Activity)context).findViewById(result_id);
+                    TextView volatilityResult = (TextView) ((Activity)context).findViewById(volatility_id);
 
                     result.setText("Calculating...");
+                    volatilityResult.setText("Calculating...");
 //                    double sum_price = 0.0;
 //                    double sum_volume = 0.0;
                     double sum_returns = 0.0;
@@ -77,14 +79,26 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
 //                    double vwap = sum_price / sum_volume;
                     Log.v("sumret is ", String.valueOf(sum_returns ));
-                    Log.v("count is ", String.valueOf(count));
+                    Log.v("count is ", String.valueOf(count ));
                     double avg = sum_returns / (double)(count- 1);
                     double annRet = Math.sqrt(250) * avg;
                     double var = sum_retsquare/ (double)(count- 1) - avg*avg;
                     double asd = Math.sqrt(250) * Math.sqrt(var);
                     String toRet = String.format("%.2f", annRet*100.0);
                     result.setText(toRet + "%");
+                    String toVRet = String.format("%.2f", asd*100.0);
+                    volatilityResult.setText(toVRet + "%");
                     Log.v("ASD= ", String.valueOf( asd ));
+                }
+            });
+        }else if(intent.getAction().equals( "DOWNLOAD_FAILED")){
+            Log.v("download", "FAILED");
+            int result_id = intent.getIntExtra("result", 0 );
+            handler.post( new Runnable() {
+                @Override
+                public void run() {
+                    TextView result = (TextView) ((Activity)context).findViewById(result_id);
+                    result.setText("Bad Ticker");
                 }
             });
         }

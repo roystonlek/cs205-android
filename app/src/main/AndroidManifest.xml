@@ -32,6 +32,7 @@
         <receiver android:name=".MyBroadcastReceiver"
             tools:ignore="Instantiatable">
             <intent-filter>
+                <action android:name="DOWNLOAD_FAILED"/>
                 <action android:name="DOWNLOAD_COMPLETE"/>
             </intent-filter>
         </receiver>

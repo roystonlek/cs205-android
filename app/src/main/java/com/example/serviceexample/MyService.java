@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
@@ -12,6 +13,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,42 +106,54 @@ public class MyService extends Service{
                 jsonArrayTime = jsonObject.getJSONArray("t");
             } catch (JSONException e) {e.printStackTrace();}
 
+            if(jsonArrayClose == null ){
+                Log.v("error " , "error occured successfully");
+                Intent intent = new Intent("DOWNLOAD_FAILED");
+                //broadcast for them to know what to do next
+                //one of the java will take the intent and do certain actions
+                intent.putExtra("ticker", "badTicker");
+                intent.putExtra("result", result_id);
+                sendBroadcast(intent);
+            }else{
+                Log.v("close", String.valueOf(jsonArrayClose.length()));
+                Log.v("vol", String.valueOf(jsonArrayVolume.length()));
+                Log.v("vol", String.valueOf(jsonArrayTime.length()));
 
-            Log.v("close", String.valueOf(jsonArrayClose.length()));
-            Log.v("vol", String.valueOf(jsonArrayVolume.length()));
-            Log.v("vol", String.valueOf(jsonArrayTime.length()));
+                try {
+                    for (int i = 0; i < jsonArrayClose.length(); i++) {
+                        double close = jsonArrayClose.getDouble(i);
+                        double volume = jsonArrayVolume.getDouble(i);
+                        String time = jsonArrayTime.getString(i);
+                        //logging so that we can see the operations in logcat
+                        Log.v("data", i + ":, c: " + close + " v: " + volume + "t: " + time);
+                        //database operations of inserting the data into the content provider
+                        //persisted in sqlite db
+                        ContentValues values = new ContentValues();
+                        values.put(HistoricalDataProvider.CLOSE, close);
+                        values.put(HistoricalDataProvider.VOLUME, volume);
+                        values.put(HistoricalDataProvider.NAME, ticker);
+                        values.put(HistoricalDataProvider.TIME, time);
+                        //HDP.content_uri is to get the connection to the sqlite db
+                        //getContentResolver() is a method from extending service
+                        getContentResolver().insert(HistoricalDataProvider.CONTENT_URI, values);
+                    }
+                } catch (JSONException e) {e.printStackTrace();}
 
-            try {
-                for (int i = 0; i < jsonArrayClose.length(); i++) {
-                    double close = jsonArrayClose.getDouble(i);
-                    double volume = jsonArrayVolume.getDouble(i);
-                    String time = jsonArrayTime.getString(i);
-                    //logging so that we can see the operations in logcat
-                    Log.v("data", i + ":, c: " + close + " v: " + volume + "t: " + time);
-                    //database operations of inserting the data into the content provider
-                    //persisted in sqlite db
-                    ContentValues values = new ContentValues();
-                    values.put(HistoricalDataProvider.CLOSE, close);
-                    values.put(HistoricalDataProvider.VOLUME, volume);
-                    values.put(HistoricalDataProvider.NAME, ticker);
-                    values.put(HistoricalDataProvider.TIME, time);
-                    //HDP.content_uri is to get the connection to the sqlite db
-                    //getContentResolver() is a method from extending service
-                    getContentResolver().insert(HistoricalDataProvider.CONTENT_URI, values);
-                }
-            } catch (JSONException e) {e.printStackTrace();}
+                // broadcast message that download is complete
 
-            // broadcast message that download is complete
+                Intent intent = new Intent("DOWNLOAD_COMPLETE");
+                //broadcast for them to know what to do next
+                //one of the java will take the intent and do certain actions
+                Bundle bundle = msg.getData();
+                Log.v("Bundle value =" , String.valueOf(bundle.getInt("volatility")));
+                intent.putExtra("volatility" , bundle.getInt("volatility"));
+                intent.putExtra("ticker", String.valueOf(ticker));
+                intent.putExtra("result", result_id);
+                sendBroadcast(intent);
+                Log.v("Service looper", "Done here ");
+                Log.v("ticker is ", ticker);
 
-            Intent intent = new Intent("DOWNLOAD_COMPLETE");
-            //broadcast for them to know what to do next
-            //one of the java will take the intent and do certain actions
-            intent.putExtra("ticker", String.valueOf(ticker));
-            intent.putExtra("result", result_id);
-            sendBroadcast(intent);
-            Log.v("Service looper", "Done here ");
-            Log.v("ticker is ", ticker);
-
+            }
             stopSelf(msg.arg1);
 
         }
@@ -160,17 +174,20 @@ public class MyService extends Service{
 //        ticker = intent.getStringExtra("ticker"); //putExtra then now can retrieve (key,value)
 //        result_id = intent.getIntExtra("result", 0 );
         getContentResolver().delete(HistoricalDataProvider.CONTENT_URI,null,null);
-        Log.v("nimama =" , String.valueOf(intent.getIntExtra("result", 0 )));
         Toast.makeText(this, "download starting", Toast.LENGTH_SHORT).show();
         int res[] = intent.getIntArrayExtra("ids");
         String tickers[] = intent.getStringArrayExtra("tickers");
-        Log.v("attributes", tickers[0] + String.valueOf(res[0]));
+        int volatilities[] = intent.getIntArrayExtra("volatilities");
+        Log.v("attributes", tickers[0] + "-"+ String.valueOf(res[0]) + "-" + String.valueOf(volatilities[0]));
         for(int pos = 0 ; pos < res.length ; pos++){
             if(res[pos] != 0 ){
                 Message msg = serviceHandler.obtainMessage();
                 msg.arg1 = startId;
                 msg.arg2 = res[pos];
                 msg.obj = tickers[pos];
+                Bundle bundle = new Bundle();
+                bundle.putInt("volatility", volatilities[pos]);
+                msg.setData(bundle);
                 serviceHandler.sendMessage(msg);
             }
         }
