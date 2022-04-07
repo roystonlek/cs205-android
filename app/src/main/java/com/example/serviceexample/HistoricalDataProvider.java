@@ -84,7 +84,6 @@ public class HistoricalDataProvider extends ContentProvider {
         // create db if not exists
         db = dbHelper.getWritableDatabase();
         //to clear the data before inserting
-        db.execSQL("delete from history");
         return (db == null)? false:true;
 
     }
@@ -125,7 +124,6 @@ public class HistoricalDataProvider extends ContentProvider {
                 "       (close - LAG(close, 1, null)OVER(ORDER BY time))/(LAG(close, 1, null)OVER(ORDER BY time)) returns " +
                 " FROM history where name = ? group by time" +
                 " ORDER BY time";
-//        Cursor c = qb.query(db, projection, selection, selectionArgs,null, null, sortOrder);
         Cursor c = db.rawQuery(sqltest, selectionArgs);
 
         // register to watch a content URI for changes

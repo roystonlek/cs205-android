@@ -38,7 +38,7 @@ public class MyService extends Service{
     private static final int READ_TIMEOUT = 15000;
     private static final int CONNECTION_TIMEOUT = 15000;
 
-//    private String ticker = "MSFT";
+    //    private String ticker = "MSFT";
     private String token ="c8vgk7aad3icdhue95lg"; // put your own token
 //    private int result_id = 0;
 
@@ -113,6 +113,8 @@ public class MyService extends Service{
                 //one of the java will take the intent and do certain actions
                 intent.putExtra("ticker", "badTicker");
                 intent.putExtra("result", result_id);
+                Bundle bundle = msg.getData();
+                intent.putExtra("volatility",bundle.getInt("volatility"));
                 sendBroadcast(intent);
             }else{
                 Log.v("close", String.valueOf(jsonArrayClose.length()));
@@ -171,16 +173,18 @@ public class MyService extends Service{
     //when startService is called in the main (intent) is passed
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-//        ticker = intent.getStringExtra("ticker"); //putExtra then now can retrieve (key,value)
-//        result_id = intent.getIntExtra("result", 0 );
+        //resetting the database before beginning so that the data wont be affected
         getContentResolver().delete(HistoricalDataProvider.CONTENT_URI,null,null);
         Toast.makeText(this, "download starting", Toast.LENGTH_SHORT).show();
+        //getting all the values required from main
         int res[] = intent.getIntArrayExtra("ids");
         String tickers[] = intent.getStringArrayExtra("tickers");
         int volatilities[] = intent.getIntArrayExtra("volatilities");
-        Log.v("attributes", tickers[0] + "-"+ String.valueOf(res[0]) + "-" + String.valueOf(volatilities[0]));
+
         for(int pos = 0 ; pos < res.length ; pos++){
+            Log.v("attributes", tickers[pos] + "-"+ String.valueOf(res[pos]) + "-" + String.valueOf(volatilities[pos]));
             if(res[pos] != 0 ){
+                //if it is initialised, send the message to looper with the vars
                 Message msg = serviceHandler.obtainMessage();
                 msg.arg1 = startId;
                 msg.arg2 = res[pos];
@@ -191,11 +195,6 @@ public class MyService extends Service{
                 serviceHandler.sendMessage(msg);
             }
         }
-//        Message msg = serviceHandler.obtainMessage();
-//        msg.arg1 = startId;
-//        msg.arg2 = intent.getIntExtra("result", 0 );
-//        msg.obj = intent.getStringExtra("ticker");
-//        serviceHandler.sendMessage(msg);
 
         return START_STICKY;
     }
