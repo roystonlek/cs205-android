@@ -159,14 +159,26 @@ public class MyService extends Service{
     public int onStartCommand(Intent intent, int flags, int startId){
 //        ticker = intent.getStringExtra("ticker"); //putExtra then now can retrieve (key,value)
 //        result_id = intent.getIntExtra("result", 0 );
+        getContentResolver().delete(HistoricalDataProvider.CONTENT_URI,null,null);
         Log.v("nimama =" , String.valueOf(intent.getIntExtra("result", 0 )));
         Toast.makeText(this, "download starting", Toast.LENGTH_SHORT).show();
-
-        Message msg = serviceHandler.obtainMessage();
-        msg.arg1 = startId;
-        msg.arg2 = intent.getIntExtra("result", 0 );
-        msg.obj = intent.getStringExtra("ticker");
-        serviceHandler.sendMessage(msg);
+        int res[] = intent.getIntArrayExtra("ids");
+        String tickers[] = intent.getStringArrayExtra("tickers");
+        Log.v("attributes", tickers[0] + String.valueOf(res[0]));
+        for(int pos = 0 ; pos < res.length ; pos++){
+            if(res[pos] != 0 ){
+                Message msg = serviceHandler.obtainMessage();
+                msg.arg1 = startId;
+                msg.arg2 = res[pos];
+                msg.obj = tickers[pos];
+                serviceHandler.sendMessage(msg);
+            }
+        }
+//        Message msg = serviceHandler.obtainMessage();
+//        msg.arg1 = startId;
+//        msg.arg2 = intent.getIntExtra("result", 0 );
+//        msg.obj = intent.getStringExtra("ticker");
+//        serviceHandler.sendMessage(msg);
 
         return START_STICKY;
     }

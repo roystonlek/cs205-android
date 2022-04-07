@@ -150,6 +150,7 @@ public class HistoricalDataProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String s, @Nullable String[] strings) {
+        db.execSQL("delete from history");
         return 0;
     }
 

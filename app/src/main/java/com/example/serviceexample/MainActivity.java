@@ -52,35 +52,30 @@ public class MainActivity extends AppCompatActivity{
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MyService.class);
-                intent.putExtra("ticker", String.valueOf(ticker.getText()));
-                intent.putExtra("result", R.id.textview_result);
-//                Log.v("main res =", String.valueOf(R.id.textview_result) );
+                int resultids[] = {0,0,0,0,0};
+                String tickers[] = new String[5];
+
                 if(!String.valueOf(ticker.getText()).equals("")){
-                    startService(intent);
+                    tickers[0] = String.valueOf(ticker.getText());
+                    resultids[0] = R.id.textview_result;
                 }
-
-                // comment off this part the thing will work normally
-                Intent intent1 = new Intent(getApplicationContext(), MyService.class);
-                intent1.putExtra("ticker", String.valueOf(ticker1.getText()));
-                intent1.putExtra("result", R.id.textview_result2);
                 if(!String.valueOf(ticker1.getText()).equals("")){
-                    startService(intent1);
+                    tickers[1] = String.valueOf(ticker1.getText());
+                    resultids[1] = R.id.textview_result2;
                 }
-
-                Intent intent2 = new Intent(getApplicationContext(), MyService.class);
-                intent2.putExtra("ticker", String.valueOf(ticker2.getText()));
-                intent2.putExtra("result", R.id.textview_result3);
                 if(!String.valueOf(ticker2.getText()).equals("")){
-                    startService(intent2);
+                    tickers[2] = String.valueOf(ticker2.getText());
+                    resultids[2] = R.id.textview_result3;
+                }
+                if(!String.valueOf(ticker3.getText()).equals("")){
+                    tickers[3] = String.valueOf(ticker3.getText());
+                    resultids[3] = R.id.textview_result4;
                 }
 
-                Intent intent3 = new Intent(getApplicationContext(), MyService.class);
-                intent3.putExtra("ticker", String.valueOf(ticker3.getText()));
-                intent3.putExtra("result", R.id.textview_result4);
-                if(!String.valueOf(ticker3.getText()).equals("")){
-                    startService(intent3);
-                }
+                Intent test = new Intent(getApplicationContext(),MyService.class);
+                test.putExtra("ids", resultids);
+                test.putExtra("tickers", tickers);
+                startService(test);
             }
         });
 
