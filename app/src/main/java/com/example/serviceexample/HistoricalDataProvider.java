@@ -83,6 +83,8 @@ public class HistoricalDataProvider extends ContentProvider {
         DatabaseHelper dbHelper = new DatabaseHelper(context);
         // create db if not exists
         db = dbHelper.getWritableDatabase();
+        //to clear the data before inserting
+        db.execSQL("delete from history");
         return (db == null)? false:true;
 
     }
@@ -90,7 +92,6 @@ public class HistoricalDataProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-
         long rowID = db.insert(TABLE_NAME, "", values);
 
         if (rowID > 0) {
@@ -104,7 +105,6 @@ public class HistoricalDataProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,String[] selectionArgs, String sortOrder) {
-
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables(TABLE_NAME);
 

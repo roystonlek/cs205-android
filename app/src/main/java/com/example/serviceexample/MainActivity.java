@@ -56,23 +56,31 @@ public class MainActivity extends AppCompatActivity{
                 intent.putExtra("ticker", String.valueOf(ticker.getText()));
                 intent.putExtra("result", R.id.textview_result);
 //                Log.v("main res =", String.valueOf(R.id.textview_result) );
-                startService(intent);
+                if(!String.valueOf(ticker.getText()).equals("")){
+                    startService(intent);
+                }
 
                 // comment off this part the thing will work normally
                 Intent intent1 = new Intent(getApplicationContext(), MyService.class);
                 intent1.putExtra("ticker", String.valueOf(ticker1.getText()));
                 intent1.putExtra("result", R.id.textview_result2);
-                startService(intent1);
+                if(!String.valueOf(ticker1.getText()).equals("")){
+                    startService(intent1);
+                }
 
                 Intent intent2 = new Intent(getApplicationContext(), MyService.class);
                 intent2.putExtra("ticker", String.valueOf(ticker2.getText()));
                 intent2.putExtra("result", R.id.textview_result3);
-                startService(intent2);
+                if(!String.valueOf(ticker2.getText()).equals("")){
+                    startService(intent2);
+                }
 
                 Intent intent3 = new Intent(getApplicationContext(), MyService.class);
                 intent3.putExtra("ticker", String.valueOf(ticker3.getText()));
                 intent3.putExtra("result", R.id.textview_result4);
-                startService(intent3);
+                if(!String.valueOf(ticker3.getText()).equals("")){
+                    startService(intent3);
+                }
             }
         });
 
@@ -83,6 +91,8 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View view) {
                 result.setText("Waiting for data.. ");
                 result1.setText("Waiting for data.. ");
+                result2.setText("Waiting for data.. ");
+                result3.setText("Waiting for data.. ");
 //                myBroadcastReceiver = new MyBroadcastReceiver(new Handler(Looper.getMainLooper()));
 //                registerReceiver(myBroadcastReceiver, new IntentFilter("DOWNLOAD_COMPLETE"));
             }
