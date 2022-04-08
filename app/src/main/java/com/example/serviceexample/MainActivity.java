@@ -22,7 +22,7 @@ import com.example.serviceexample.*;
 
 public class MainActivity extends AppCompatActivity{
 
-    private Button start, calc;
+    private Button start ;
     private TextView result , result1 , result2 , result3, result4;
     private TextView volatility , volatility1,volatility2,volatility3, volatility4;
     private EditText ticker , ticker1, ticker2, ticker3, ticker4;
