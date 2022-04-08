@@ -43,7 +43,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                     double sum_returns = 0.0;
                     double sum_retsquare = 0.0;
                     int count = 0;
-                    Cursor cursor = context.getContentResolver().query(CONTENT_URI, null, "name like '%"+ticker+"%'", new String[]{ticker}, null);
+                    Cursor cursor = context.getContentResolver().query(CONTENT_URI, null, null , new String[]{ticker}, null);
                     if (cursor.moveToFirst()) {
                         double returns = cursor.getDouble(cursor.getColumnIndexOrThrow("returns"));
                         sum_returns += returns;
