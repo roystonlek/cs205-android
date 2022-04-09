@@ -66,7 +66,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
 //                  logic for calculation of the annualized values
                     double avg = sum_returns / (double)(count- 1);
-                    double annRet = Math.sqrt(250) * avg;
+                    double annRet = 250 * avg;
                     double var = sum_retsquare/ (double)(count- 1) - avg*avg;
                     double asd = Math.sqrt(250) * Math.sqrt(var);
                     String toRet = String.format("%.2f", annRet*100.0);
